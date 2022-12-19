@@ -1,5 +1,8 @@
 package com.ch1ppy.springboot_back_exam.pojo.po;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -9,10 +12,12 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
+@TableName("t_user")
 public class ProjectUser {
 	/**
 	 * 主键，基本上使用自增，分布式情况下考虑雪花算法
 	 */
+	@TableId(type = IdType.AUTO)
 	private Integer id;
 
 	/**

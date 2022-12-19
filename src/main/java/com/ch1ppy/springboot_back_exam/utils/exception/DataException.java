@@ -1,4 +1,4 @@
-package com.ch1ppy.springboot_back_exam.utils.eception;
+package com.ch1ppy.springboot_back_exam.utils.exception;
 
 
 import com.ch1ppy.springboot_back_exam.utils.result.ResponseCode;

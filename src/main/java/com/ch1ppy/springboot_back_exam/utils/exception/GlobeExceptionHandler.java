@@ -1,9 +1,9 @@
-package com.ch1ppy.springboot_back_exam.utils.eception;
+package com.ch1ppy.springboot_back_exam.utils.exception;
 
-;
 import com.ch1ppy.springboot_back_exam.utils.result.ResponseCode;
 import com.ch1ppy.springboot_back_exam.utils.result.Result;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  */
 @RestControllerAdvice
 @Slf4j
-public class ExceptionHandler {
+public class GlobeExceptionHandler {
 	private String getErrorPosition(Exception e){
 		if(e.getStackTrace().length>0){
 			final StackTraceElement element = e.getStackTrace()[0];
@@ -34,14 +34,19 @@ public class ExceptionHandler {
 		return Result.error(responseCode,msg);
 	}
 
-	@org.springframework.web.bind.annotation.ExceptionHandler(value = Exception.class)
+	@ExceptionHandler(value = Exception.class)
 	Result<String> exceptionHandler(Exception e){
 		String errorMsg = e.getMessage() != null ? e.getMessage() : "未知错误";
 		return defaultHandler(e,errorMsg,ResponseCode.DEFAULT_ERROR);
 	}
 
-	@org.springframework.web.bind.annotation.ExceptionHandler(value = BaseException.class)
-	Result<String> projectExceptionHandler(BaseException e){
+	@ExceptionHandler(value = DefaultException.class)
+	Result<String> baseExceptionHandler(BaseException e){
 		return defaultHandler(e,e.getMessage(),ResponseCode.DEFAULT_ERROR);
+	}
+
+	@ExceptionHandler(value = DataException.class)
+	Result<String> dataExceptionHandler(DataException e){
+		return defaultHandler(e,e.getMessage(),ResponseCode.DATA_ERROR);
 	}
 }

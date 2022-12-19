@@ -1,6 +1,9 @@
 server:
-  port: 9000
+  port: 8080
 spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: spring-boot-exam
@@ -11,4 +14,3 @@ spring:
     hikari:
       max-lifetime: 500000
 
-mybatis:
