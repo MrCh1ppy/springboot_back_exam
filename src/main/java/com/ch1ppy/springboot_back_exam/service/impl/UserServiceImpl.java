@@ -2,7 +2,6 @@ package com.ch1ppy.springboot_back_exam.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ch1ppy.springboot_back_exam.dao.UserMapper;
 import com.ch1ppy.springboot_back_exam.pojo.bo.req.UserAddReq;
 import com.ch1ppy.springboot_back_exam.pojo.bo.req.UserPageQueryReq;
@@ -13,14 +12,10 @@ import com.ch1ppy.springboot_back_exam.service.IUserService;
 import com.ch1ppy.springboot_back_exam.utils.exception.DataException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * @author MrCh1ppy
@@ -92,22 +87,8 @@ public class UserServiceImpl implements IUserService {
 				.eq(req.getIsDelete() != null, ProjectUser::getIsDelete, req.getIsDelete())
 				.like(StringUtils.hasText(req.getUsername()), ProjectUser::getUserName, req.getUsername())
 				.page(req.page());
-		//但是需要获取的是VO，还需二次加工,我们的思路是把page内部的数据加工之后再塞回去
-		//对page的列表中的数据进行修改,如果转化内部比较复杂的，比如说需要远程调用或者查数据库的，推荐使用并行流
-		//等价于遍历getRecords()之后的list，然后对每个元素调用UserVo的from方法，然后收集到一个list中
-		List<UserVo> vos = page.getRecords().stream()
-				.map(UserVo::from)
-				.collect(Collectors.toList());
-		//创建一个空页码,注意泛型
-		IPage<UserVo> resPage = Page.of(0, 0);
-		//因为泛型不一致，所以需要先将泛型冲突的list变为空list，emptyList与任意泛型list不冲突
-		page.setRecords(Collections.emptyList());
-		//将属性按照名字复制
-		BeanUtils.copyProperties(page, resPage);
-		//将数据压入
-		resPage.setRecords(vos);
-		//看上去操作很复杂，但是实际上对于数据的转化只局限在显示的那几个数据上，没有遍历整个数据集进行转化，所以反而快
-		return resPage;
+		//下面这个是最简单的转换方法，这句话完可以直接return
+		return page.convert(UserVo::from);
 	}
 
 }
