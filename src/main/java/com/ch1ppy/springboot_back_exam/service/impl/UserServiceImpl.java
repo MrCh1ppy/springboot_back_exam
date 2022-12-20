@@ -88,6 +88,7 @@ public class UserServiceImpl implements IUserService {
 				.like(StringUtils.hasText(req.getUsername()), ProjectUser::getUserName, req.getUsername())
 				.page(req.page());
 		//下面这个是最简单的转换方法，这句话完可以直接return
+		//需要显示的不是User全部而是UserVo，所以需要对List内部的数据进行转化，这里使用convert来解决，可以考虑看一下内部实现
 		return page.convert(UserVo::from);
 	}
 
