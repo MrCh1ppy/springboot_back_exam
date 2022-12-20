@@ -10,6 +10,8 @@ import lombok.Data;
 /**
  * @author MrCh1ppy
  * 添加的 @Data注解来自lombok，会自动生成getter与setter
+ * Po类，一般与数据库中的表直接绑定，一般来说字段名称尽量与数据库的属性一致
+ *数据库中的蛇形会直接转化为java的小驼峰
  */
 @Data
 @AllArgsConstructor
@@ -34,7 +36,7 @@ public class ProjectUser {
 	/**
 	 * 一般使用假删除，通过修改一个flag位代表是否删除，0代表否，1代表是
 	 */
-	private Integer isDelete;
+	private Boolean isDelete;
 	@Version
 	private Integer version;
 }

@@ -8,7 +8,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: spring-boot-exam
     password: rz8BTX6HGcxwJGNx
-    host:
+    host: 47.98.206.89
     database-name: spring-boot-exam
     database-port: 3306
     url: jdbc:mysql://${spring.datasource.host}:${spring.datasource.database-port}/${spring.datasource.database-name}
