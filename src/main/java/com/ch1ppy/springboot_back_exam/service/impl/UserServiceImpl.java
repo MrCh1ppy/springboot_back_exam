@@ -29,7 +29,8 @@ public class UserServiceImpl implements IUserService {
 				null,
 				req.getUserName(),
 				req.getPasswordMd5(),
-				req.getIsDelete()
+				req.getIsDelete(),
+				null
 		);
 		//mybatis plus插入时，如果插入成功会把成功插入的主键id放到entity中。这也是作为判别其是否插入成功的方法
 		userMapper.insert(user);
@@ -42,7 +43,8 @@ public class UserServiceImpl implements IUserService {
 				req.getId(),
 				req.getUserName(),
 				req.getPasswordMd5(),
-				req.getIsDelete()
+				req.getIsDelete(),
+				null
 		);
 		//一般情况下， mybatis plus这种默认返回值会返回数据库中修改的条数
 		int num = userMapper.updateById(user);
@@ -61,6 +63,7 @@ public class UserServiceImpl implements IUserService {
 		//原理是在Po中定义时已经通过注解将实体类与数据库的表链接，对实体类的操作可以映射为SQL
 		Optional<ProjectUser> userOpt = new LambdaQueryChainWrapper<>(userMapper)
 				.eq(ProjectUser::getId, id)
+				//寻找还未被删除的数据然后进行假删
 				.eq(ProjectUser::getIsDelete, 0)
 				//可能为null的数据都使用Optional进行包裹，防止万恶的NullPointerException
 				.oneOpt();

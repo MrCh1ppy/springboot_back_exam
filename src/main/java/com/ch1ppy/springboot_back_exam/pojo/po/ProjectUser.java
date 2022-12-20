@@ -3,6 +3,7 @@ package com.ch1ppy.springboot_back_exam.pojo.po;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.Version;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -34,5 +35,7 @@ public class ProjectUser {
 	 * 一般使用假删除，通过修改一个flag位代表是否删除，0代表否，1代表是
 	 */
 	private Integer isDelete;
+	@Version
+	private Integer version;
 }
 
