@@ -1,5 +1,6 @@
 package com.ch1ppy.springboot_back_exam.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ch1ppy.springboot_back_exam.dao.UserMapper;
@@ -84,21 +85,21 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public Page<UserVo> selectUserInPage(UserPageQueryReq req) {
+	public IPage<UserVo> selectUserInPage(UserPageQueryReq req) {
 		//这部分是分页查询，查询出了结果
-		Page<ProjectUser> page = new LambdaQueryChainWrapper<>(userMapper)
+		IPage<ProjectUser> page = new LambdaQueryChainWrapper<>(userMapper)
 				//第一个参数是代表条件生效的状态，即，当getIsDelete不为空时，后面两个参数相同
 				.eq(req.getIsDelete() != null, ProjectUser::getIsDelete, req.getIsDelete())
 				.like(StringUtils.hasText(req.getUsername()), ProjectUser::getUserName, req.getUsername())
 				.page(req.page());
 		//但是需要获取的是VO，还需二次加工,我们的思路是把page内部的数据加工之后再塞回去
-		//对page的列表中的数据进行修改
+		//对page的列表中的数据进行修改,如果转化内部比较复杂的，比如说需要远程调用或者查数据库的，推荐使用并行流
 		//等价于遍历getRecords()之后的list，然后对每个元素调用UserVo的from方法，然后收集到一个list中
 		List<UserVo> vos = page.getRecords().stream()
 				.map(UserVo::from)
 				.collect(Collectors.toList());
 		//创建一个空页码,注意泛型
-		Page<UserVo> resPage = Page.of(0, 0);
+		IPage<UserVo> resPage = Page.of(0, 0);
 		//因为泛型不一致，所以需要先将泛型冲突的list变为空list，emptyList与任意泛型list不冲突
 		page.setRecords(Collections.emptyList());
 		//将属性按照名字复制

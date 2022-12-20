@@ -1,6 +1,6 @@
 package com.ch1ppy.springboot_back_exam.service;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ch1ppy.springboot_back_exam.pojo.bo.req.UserAddReq;
 import com.ch1ppy.springboot_back_exam.pojo.bo.req.UserPageQueryReq;
 import com.ch1ppy.springboot_back_exam.pojo.bo.req.UserUpdateReq;
@@ -53,5 +53,5 @@ public interface IUserService {
 	 * @param req the req
 	 * @return the page
 	 */
-	Page<UserVo> selectUserInPage(UserPageQueryReq req);
+	IPage<UserVo> selectUserInPage(UserPageQueryReq req);
 }

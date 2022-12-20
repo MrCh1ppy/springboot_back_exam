@@ -1,5 +1,6 @@
 package com.ch1ppy.springboot_back_exam.pojo.bo.req;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 /**
@@ -30,7 +31,7 @@ public interface PageQueryReq {
 	 *
 	 * @return the page
 	 */
-	default <T> Page<T> page() {
+	default <T> IPage<T> page() {
 		return new Page<>(getPageNum(), getPageSize());
 	}
 }
